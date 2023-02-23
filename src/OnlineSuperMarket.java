@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class OnlineSuperMarket {
+public class OnlineSuperMarket implements Serializable {
     private List<Product> products;
     List<Product> shoppingCartArr;
     private double balance;
@@ -26,6 +26,7 @@ public class OnlineSuperMarket {
 
     public void addProduct(Product product){
         products.add(product);
+        saveData();
     }
 
     public void printProducts(){
@@ -44,17 +45,24 @@ public class OnlineSuperMarket {
             sortedProducts.add(product);
         }
     }
+    for(Product sortedProduct : sortedProducts){
+        System.out.println(sortedProduct.getProduct());
+    }
     }
     public void shoppingCart(String productName){
         Product product = findProduct(productName);
     if(product == null){
         System.out.println("Product not found");
     }
+    else if (getBalance() - product.getPrice() < 0){
+            System.out.println("Insufficient balance");
+        }
     else{
         shoppingCartArr.add(product);
         System.out.println("Product added to the cart:" + product.getProduct());
         balance = getBalance() - product.getPrice();
         System.out.println("Remaining balance: " + balance);
+        saveData();
     }
     }
     public Product findProduct(String product){
@@ -89,5 +97,35 @@ public class OnlineSuperMarket {
         }catch (IOException | ClassNotFoundException e){
             e.printStackTrace();
         }
+    }
+    private void checkout(){
+        if(shoppingCartArr.isEmpty()){
+            System.out.println("There is nothing in the shopping cart");
+            return;
+        }
+        double total = 0;
+        for(Product product : shoppingCartArr){
+            total += product.getPrice();
+            System.out.println("Product : " + product.getProduct() + " = " + product.getPrice());
+        }
+        System.out.println("Total cost is : " +total);
+        double remainingBalance = getBalance() - total;
+        System.out.println("Money left: " +remainingBalance);
+        if(remainingBalance < 0){
+            System.out.println("Insufficient balance");
+        }
+        try{
+            String file = "checkout_receipt.txt";
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write("Items:");
+            for(Product product : shoppingCartArr){
+                fileWriter.write(product.getProduct() + " = " + product.getPrice() + "\n");
+            }
+            fileWriter.write("Total is: "+total);
+            fileWriter.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 }
