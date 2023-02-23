@@ -17,6 +17,7 @@ public class Main {
         onlineSuperMarket.sortPrices();
         onlineSuperMarket.shoppingCart("Eggs");
         onlineSuperMarket.shoppingCart("Bread");
-        onlineSuperMarket.checkout();
+
+
     }
 }
