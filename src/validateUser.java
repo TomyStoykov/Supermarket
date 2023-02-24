@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class validateUser {
@@ -56,6 +58,15 @@ public class validateUser {
         System.out.println("Enter your bank account");
         bankAccount = scanner.nextLine();
         System.out.println("Account successfully created");
+        try{
+            FileWriter writer = new FileWriter(userName+ ".txt");
+            writer.write("Username: "+ userName + "\n");
+            writer.write("Password: "+ password + "\n");
+            writer.write("Email: "+ email + "\n");
+            writer.write("Bank Acoount: "+ bankAccount + "\n");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
