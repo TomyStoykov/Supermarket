@@ -3,6 +3,7 @@
 public class Main {
     public static void main(String[] args) {
         OnlineSuperMarket onlineSuperMarket = new OnlineSuperMarket(5);
+        validateUser validateUser = new validateUser();
         Product products[] = {new Product("Milk", "Dairy", 2.5),
         new Product("Eggs", "Dairy", 1.5),
         new Product("Bread", "Bakery", 1.0),
@@ -17,6 +18,8 @@ public class Main {
         onlineSuperMarket.sortPrices();
         onlineSuperMarket.shoppingCart("Eggs");
         onlineSuperMarket.shoppingCart("Bread");
+
+        onlineSuperMarket.checkout();
 
 
     }

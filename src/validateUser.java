@@ -1,9 +1,8 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class validateUser {
-    private String userName;
+    /*private String userName;
     private String email;
     private String password;
     private String bankAccount;
@@ -47,19 +46,20 @@ public class validateUser {
 
     public void setBankAccount(String bankAccount) {
         this.bankAccount = bankAccount;
-    }
-    public void register(String userName, String email, String password, String bankAccount){
+    }*/
+    public  void register(){
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your username: ");
-        userName = scanner.nextLine();
+        String userName = scanner.nextLine();
         System.out.println("Enter your email");
-        email = scanner.nextLine();
+        String email = scanner.nextLine();
         System.out.println("Enter your password");
-        password = scanner.nextLine();
+        String password = scanner.nextLine();
         System.out.println("Enter your bank account");
-        bankAccount = scanner.nextLine();
+        String bankAccount = scanner.nextLine();
         System.out.println("Account successfully created");
         try{
-            FileWriter writer = new FileWriter(userName+ ".txt");
+            FileWriter writer = new FileWriter(userName + ".txt");
             writer.write("Username: "+ userName + "\n");
             writer.write("Password: "+ password + "\n");
             writer.write("Email: "+ email + "\n");
@@ -67,7 +67,28 @@ public class validateUser {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public  void logIn() throws  IOException {
+        Scanner scanner = new Scanner(System.in);
+        boolean isValidated = false;
+        String userName;
+        String password;
+        System.out.println("Enter username or email: ");
+        userName = scanner.nextLine();
+        System.out.println("Enter password: ");
+        password = scanner.nextLine();
+        File file = new File(userName + ".txt");
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String storedUserName = reader.readLine();
+        String storedEmail = reader.readLine();
+        String storedPassword = reader.readLine();
+        String storedBankAccount = reader.readLine();
+        reader.close();
+        if (userName.equals(storedUserName) && password.equals(storedPassword)) ;
+        {
+            isValidated = true;
+        }
     }
 
 }
