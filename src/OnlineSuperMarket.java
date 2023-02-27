@@ -2,11 +2,10 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class OnlineSuperMarket implements Serializable {
+public class OnlineSuperMarket implements Serializable{
     private List<Product> products;
-    List<Product> shoppingCartArr;
+    private List<Product> shoppingCartArr;
     private double balance;
-    private final String fileName = "db.bin";
 
     public OnlineSuperMarket(double balance) {
         this.balance = balance;
@@ -18,17 +17,22 @@ public class OnlineSuperMarket implements Serializable {
         return balance;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
 
     public void addProduct(Product product){
         products.add(product);
-        saveData();
+        ReadAndWrite.saveData(products,balance);
     }
-
+    public void removeProduct(String product){
+        for(int i = 0;i< products.size();i++){
+            if (products.get(i).getProduct().equals(product)) {
+                System.out.println("Product removed: "+products.get(i).getProduct());
+                products.remove(i);
+                return;
+            }
+        }
+        System.out.println("Product not found");
+    }
     public void printProducts(){
-        //System.out.println("Printing the list of products: ");
         for(Product product : products){
             System.out.println(product.getProduct()+ " " + product.getCategory() +" "+ product.getPrice());
         }
@@ -38,7 +42,14 @@ public class OnlineSuperMarket implements Serializable {
         System.out.println("Prices sorted");
         printProducts();
     }
-    public void sortCategory(String category){
+
+    public void sortCategories(){
+        products.sort(Comparator.comparing(Product::getProduct));
+        System.out.println("Products sorted: ");
+        printProducts();
+    }
+
+    public void filterCategory(String category){
         List<Product> sortedProducts = new ArrayList<>();
 
         for(Product product : products){
@@ -72,7 +83,7 @@ public class OnlineSuperMarket implements Serializable {
         System.out.println("Product added to the cart:" + product.getProduct());
         balance = getBalance() - product.getPrice();
         System.out.println("Remaining balance: $" + balance);
-        saveData();
+        ReadAndWrite.saveData(products,balance);
     }
     }
     public Product findProduct(String product){
@@ -84,30 +95,6 @@ public class OnlineSuperMarket implements Serializable {
         return null;
     }
 
-    private void saveData(){
-        try{
-            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-            ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-            out.writeObject(products);
-            out.writeDouble(balance);
-            out.close();
-            fileOutputStream.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    private void loadData(){
-        try{
-            FileInputStream fileInputStream = new FileInputStream(fileName);
-            ObjectInputStream in = new ObjectInputStream(fileInputStream);
-            products = (List<Product>) in.readObject();
-            balance = in.readDouble();
-            in.close();
-            fileInputStream.close();
-        }catch (IOException | ClassNotFoundException e){
-            e.printStackTrace();
-        }
-    }
     public void checkout(){
         if(shoppingCartArr.isEmpty()){
             System.out.println("There is nothing in the shopping cart");
@@ -134,7 +121,8 @@ public class OnlineSuperMarket implements Serializable {
             for(Product product : shoppingCartArr){
                 fileWriter.write(product.getProduct() + " = $" + product.getPrice() + "\n");
             }
-            fileWriter.write("Total is: $"+total);
+            fileWriter.write("Total is: $"+total +"\n");
+            fileWriter.write("///////////////////////////////////");
             fileWriter.close();
         }catch (IOException e){
             e.printStackTrace();
