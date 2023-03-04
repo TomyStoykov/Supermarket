@@ -1,9 +1,7 @@
-import ValidateUser.InvalidInputException;
-
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws InvalidInputException {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         OnlineSuperMarket onlineSuperMarket = new OnlineSuperMarket(55);
         Product products[] = {new Product("Milk", "Dairy", 2.5),
@@ -32,6 +30,7 @@ public class Main {
             UserFactory.logIn();
         }else {
             System.out.println("You have entered an invalid option");
+            System.exit(0);
         }
         if(UserFactory.loggedIn){
             onlineSuperMarket.checkout();
