@@ -23,16 +23,16 @@ public class Main {
         System.out.println("In order to continue to checkout you need to be signed in, if you don't have an account enter 1 to register or else 2 to log in");
         int choice  = scanner.nextInt();
         if(choice ==  1){
-            UserFactory.register();
+            UserManager.register();
             System.out.println("Log in to continue");
-            UserFactory.logIn();
+            UserManager.logIn();
         }else if(choice == 2){
-            UserFactory.logIn();
+            UserManager.logIn();
         }else {
             System.out.println("You have entered an invalid option");
             System.exit(0);
         }
-        if(UserFactory.loggedIn){
+        if(UserManager.loggedIn){
             onlineSuperMarket.checkout();
         }else {
             System.out.println("You need to be logged in to be able to use checkout");

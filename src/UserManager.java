@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class UserFactory {
+public class UserManager {
 
     static boolean loggedIn = false;
 
@@ -52,12 +52,7 @@ public class UserFactory {
 
     public static void logIn() {
         if (HashMapDB.userEmailMap == null) {
-            try {
-                HashMapDB.userEmailMap = HashMapDB.readUserEmailMapFromFile();
-            } catch (IOException e) {
-                System.out.println("Failed to read user email map from file.");
-                System.exit(0);
-            }
+            HashMapDB.userEmailMap = HashMapDB.readUserEmailMapFromFile();
         }
         Scanner scanner = new Scanner(System.in);
         String userNameOrEmail;

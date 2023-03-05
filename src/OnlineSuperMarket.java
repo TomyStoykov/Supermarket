@@ -106,7 +106,6 @@ public class OnlineSuperMarket implements Serializable{
             System.out.println("Product : " + product.getProduct() + " = $" + product.getPrice());
         }
         System.out.println("Total cost is : $" +total);
-        //double remainingBalance = getBalance() - total;
         System.out.println("Money left: $" +getBalance());
         if(getBalance() < 0){
             System.out.println("Insufficient balance");
