@@ -19,12 +19,18 @@ public class UserManager {
             System.out.println("Enter your username: ");
             String userName = scanner.nextLine();
             ValidateUserName.isValidUsername(userName);
+            if(HashMapDB.readUserEmailMapFromFile() != null && HashMapDB.readUserEmailMapFromFile().containsValue(userName)){
+                throw new InvalidInputException("Username is already in use");
+            }
             System.out.println("Enter your password");
             String password = scanner.nextLine();
             ValidatePassword.isValidPassword(password);
             System.out.println("Enter your email");
             String email = scanner.nextLine();
             ValidateEmail.isValidEmail(email);
+            if(HashMapDB.readUserEmailMapFromFile() != null && HashMapDB.readUserEmailMapFromFile().containsKey(email)){
+                throw new InvalidInputException("Email is already in use");
+            }
             System.out.println("Enter your bank account");
             String bankAccount = scanner.nextLine();
             HashMapDB.userEmailMap = new HashMap<>();
@@ -32,7 +38,7 @@ public class UserManager {
             user = new User(userName, password, email, bankAccount);
         } catch (InvalidInputException e) {
             System.out.println(e.getMessage());
-            System.exit(0);
+            System.exit(1);
 
         }
             try {
